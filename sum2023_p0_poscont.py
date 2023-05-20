@@ -10,13 +10,14 @@ rightPos= 4500
 leftPos= -4500
 lmidPos = 0000
 
-speed = 10
+#speed = 10
 
 class moveForward( Plan ):
     def __init__(self,*arg,**kw):
         Plan.__init__(self, *arg, **kw)
         self.upper = self.app.upper
         self.lower = self.app.lower
+        self.speed = self.app.speed
 
     def onStart( self ):
         progress("Starting driving")
@@ -26,14 +27,15 @@ class moveForward( Plan ):
     
     def behavior(self):
         yield
+        self.speed = self.app.speed
 
-        self.upper.set_speed(speed)
-        self.lower.set_speed(speed)
+        self.upper.set_speed(self.speed)
+        self.lower.set_speed(self.speed)
 
         self.upper.set_pos(umaxPos)   # motors need time to process the movement before we can send them next move
-        yield 15/speed
+        yield 15/self.speed
         self.upper.set_pos(uminPos)
-        yield 15/speed
+        yield 15/self.speed
 
         #so if there is while loop it is stuck in there
         #is it is simple set pos then delay is needed
@@ -45,6 +47,7 @@ class turnL( Plan ):
         Plan.__init__(self, *arg, **kw)
         self.upper = self.app.upper
         self.lower = self.app.lower
+        self.speed = self.app.speed
 
     def onStart( self ):
         progress("Starting driving")
@@ -54,27 +57,29 @@ class turnL( Plan ):
     
     def behavior(self):
         yield
+        self.speed = self.app.speed
 
-        self.upper.set_speed(speed)
-        self.lower.set_speed(speed)
+        self.upper.set_speed(self.speed)
+        self.lower.set_speed(self.speed)
 
         self.upper.set_pos(umaxPos)
-        yield 5/speed
+        yield 5/self.speed
         self.lower.set_pos(leftPos)
-        yield 5/speed
+        yield 5/self.speed
 
         self.upper.set_pos(umidPos)
-        yield 5/speed
+        yield 5/self.speed
         self.lower.set_pos(lmidPos)
-        yield 5/speed
+        yield 5/self.speed
         self.upper.set_pos(uminPos)
-        yield 5/speed
+        yield 5/self.speed
 
 class turnR( Plan ):
     def __init__(self,*arg,**kw):
         Plan.__init__(self, *arg, **kw)
         self.upper = self.app.upper
         self.lower = self.app.lower
+        self.speed = self.app.speed
 
     def onStart( self ):
         progress("Starting driving")
@@ -84,21 +89,22 @@ class turnR( Plan ):
     
     def behavior(self):
         yield
+        self.speed = self.app.speed
 
-        self.upper.set_speed(speed)
-        self.lower.set_speed(speed)
+        self.upper.set_speed(self.speed)
+        self.lower.set_speed(self.speed)
 
         self.upper.set_pos(umaxPos)
-        yield 5/speed
+        yield 5/self.speed
         self.lower.set_pos(rightPos)
-        yield 5/speed
+        yield 5/self.speed
 
         self.upper.set_pos(umidPos)
-        yield 5/speed
+        yield 5/self.speed
         self.lower.set_pos(lmidPos)
-        yield 5/speed
+        yield 5/self.speed
         self.upper.set_pos(uminPos)
-        yield 5/speed
+        yield 5/self.speed
 
 
 class botControl(JoyApp):
@@ -106,6 +112,7 @@ class botControl(JoyApp):
         JoyApp.__init__(self, *arg,**kw)
         self.upper = getattr(self.robot.at, upper)
         self.lower = getattr(self.robot.at, lower)
+        self.speed = 10
     
     def onStart(self):
         self.moveForward = moveForward(self)
@@ -113,6 +120,8 @@ class botControl(JoyApp):
         self.turnL = turnL(self)
         progress("Initializing...")
         #self.moveForward.start()
+    
+
 
     
 
@@ -121,6 +130,18 @@ class botControl(JoyApp):
             return
         # assertion: must be a KEYDOWN event
 
+        if evt.key == K_1:
+            self.speed = 5
+
+        if evt.key == K_2:
+            self.speed = 10
+
+        if evt.key == K_3:
+            self.speed = 15
+
+        if evt.key == K_4:
+            self.speed = 20
+        
         if evt.key == K_UP and not self.moveForward.isRunning():
             self.moveForward.start()
 
