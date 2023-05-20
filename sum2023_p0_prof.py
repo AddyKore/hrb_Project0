@@ -306,7 +306,7 @@ class botControl( JoyApp ):
       self.maxLeft = -4000
       self.maxRight = 4000
  
-    if evt.type == KEYDOWN and evt.key in {K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8,K_9}
+  if evt.type == KEYDOWN and evt.key in {K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8,K_9}
       self.move = moveForward(self)
       self.turnR = turnR(self)
       self.turnL = turnL(self)

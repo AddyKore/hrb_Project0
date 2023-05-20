@@ -7,10 +7,10 @@ umaxPos = 7000
 uminPos = -4500
 umidPos = 1500
 rightPos= 4500
-leftPos=4500
+leftPos= -4500
 lmidPos = 0000
 
-speed = 1
+speed = 10
 
 class moveForward( Plan ):
     def __init__(self,*arg,**kw):
@@ -26,10 +26,14 @@ class moveForward( Plan ):
     
     def behavior(self):
         yield
-        self.upper.set_pos(umaxPos)
-        yield 0.5
+
+        self.upper.set_speed(speed)
+        self.lower.set_speed(speed)
+
+        self.upper.set_pos(umaxPos)   # motors need time to process the movement before we can send them next move
+        yield 15/speed
         self.upper.set_pos(uminPos)
-        yield 0.5
+        yield 15/speed
 
         #so if there is while loop it is stuck in there
         #is it is simple set pos then delay is needed
@@ -51,20 +55,20 @@ class turnL( Plan ):
     def behavior(self):
         yield
 
-        #self.upper.set_speed(speed)
-        #self.lower.set_speed(speed)
+        self.upper.set_speed(speed)
+        self.lower.set_speed(speed)
 
         self.upper.set_pos(umaxPos)
-        yield 0.5
+        yield 5/speed
         self.lower.set_pos(leftPos)
-        yield 0.5
+        yield 5/speed
 
         self.upper.set_pos(umidPos)
-        yield 0.5
+        yield 5/speed
         self.lower.set_pos(lmidPos)
-        yield 0.5
+        yield 5/speed
         self.upper.set_pos(uminPos)
-        yield 0.5
+        yield 5/speed
 
 class turnR( Plan ):
     def __init__(self,*arg,**kw):
@@ -85,16 +89,16 @@ class turnR( Plan ):
         self.lower.set_speed(speed)
 
         self.upper.set_pos(umaxPos)
-        yield 0.5
+        yield 5/speed
         self.lower.set_pos(rightPos)
-        yield 0.5
+        yield 5/speed
 
         self.upper.set_pos(umidPos)
-        yield 0.5
+        yield 5/speed
         self.lower.set_pos(lmidPos)
-        yield 0.5
+        yield 5/speed
         self.upper.set_pos(uminPos)
-        yield 0.5
+        yield 5/speed
 
 
 class botControl(JoyApp):
