@@ -3,8 +3,8 @@ from joy.decl import *
 from joy.plans import Plan
 import time
 
-umaxPos = 7000
-uminPos = -4500
+umaxPos = 4500
+uminPos = -7500
 umidPos = 1500
 rightPos= 4500
 leftPos= -4500
@@ -62,7 +62,7 @@ class turnL( Plan ):
         self.upper.set_speed(self.speed)
         self.lower.set_speed(self.speed)
 
-        self.upper.set_pos(umaxPos)
+        self.upper.set_pos(uminPos)
         yield 5/self.speed
         self.lower.set_pos(leftPos)
         yield 5/self.speed
@@ -71,7 +71,7 @@ class turnL( Plan ):
         yield 5/self.speed
         self.lower.set_pos(lmidPos)
         yield 5/self.speed
-        self.upper.set_pos(uminPos)
+        self.upper.set_pos(umaxPos)
         yield 5/self.speed
 
 class turnR( Plan ):
@@ -94,7 +94,7 @@ class turnR( Plan ):
         self.upper.set_speed(self.speed)
         self.lower.set_speed(self.speed)
 
-        self.upper.set_pos(umaxPos)
+        self.upper.set_pos(uminPos)
         yield 5/self.speed
         self.lower.set_pos(rightPos)
         yield 5/self.speed
@@ -103,7 +103,7 @@ class turnR( Plan ):
         yield 5/self.speed
         self.lower.set_pos(lmidPos)
         yield 5/self.speed
-        self.upper.set_pos(uminPos)
+        self.upper.set_pos(umaxPos)
         yield 5/self.speed
 
 

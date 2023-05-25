@@ -61,12 +61,12 @@ class turnL( Plan ):
     yield
 
     cur_pos_u= self.upper.get_pos()
-    while (cur_pos_u+self.fwdStep< maxPos):
+    while (cur_pos_u+self.fwdStep> minPos):
       cur_pos_u= self.upper.get_pos()
-      new_pos_u = cur_pos_u + self.fwdStep
+      new_pos_u = cur_pos_u - self.fwdStep
       self.upper.set_pos(new_pos_u)
-    
-    self.upper.set_pos(maxPos)
+
+    self.upper.set_pos(minPos)
 
    
 
@@ -79,9 +79,9 @@ class turnL( Plan ):
     self.lower.set_pos(self.maxLeft)
 
     cur_pos_u= self.upper.get_pos()
-    while (cur_pos_u+self.fwdStep> umidPos):
+    while (cur_pos_u+self.fwdStep< umidPos):
       cur_pos_u= self.upper.get_pos()
-      new_pos_u = cur_pos_u -  self.fwdStep
+      new_pos_u = cur_pos_u +  self.fwdStep
       self.upper.set_pos(new_pos_u)
     
     self.upper.set_pos(umidPos)
@@ -96,12 +96,14 @@ class turnL( Plan ):
     self.lower.set_pos(lmidPos)
 
     cur_pos_u= self.upper.get_pos()
-    while (cur_pos_u+self.fwdStep> minPos):
+    while (cur_pos_u+self.fwdStep< maxPos):
       cur_pos_u= self.upper.get_pos()
-      new_pos_u = cur_pos_u - self.fwdStep
+      new_pos_u = cur_pos_u + self.fwdStep
       self.upper.set_pos(new_pos_u)
+    
+    self.upper.set_pos(maxPos)
 
-    self.upper.set_pos(minPos)
+
 
 
 
@@ -192,13 +194,14 @@ class turnR( Plan ):
     yield
 
     cur_pos_u= self.upper.get_pos()
-    while (cur_pos_u+self.fwdStep< maxPos):
-      cur_pos_u= self.upper.get_pos()
-      new_pos_u = cur_pos_u + self.fwdStep
-      self.upper.set_pos(new_pos_u)
-    
-    self.upper.set_pos(maxPos)
 
+    cur_pos_u = self.upper.get_pos()
+    while (cur_pos_u+self.fwdStep> minPos):
+      cur_pos_u= self.upper.get_pos()
+      new_pos_u = cur_pos_u - self.fwdStep
+      self.upper.set_pos(new_pos_u)
+
+    self.upper.set_pos(minPos)
 
 
     cur_pos_l = self.lower.get_pos()
@@ -210,9 +213,9 @@ class turnR( Plan ):
     self.lower.set_pos(self.maxRight)
 
     cur_pos_u= self.upper.get_pos()
-    while (cur_pos_u+self.fwdStep> umidPos):
+    while (cur_pos_u+self.fwdStep< umidPos):
       cur_pos_u= self.upper.get_pos()
-      new_pos_u = cur_pos_u -  self.fwdStep
+      new_pos_u = cur_pos_u +  self.fwdStep
       self.upper.set_pos(new_pos_u)
     
     self.upper.set_pos(umidPos)
@@ -225,14 +228,14 @@ class turnR( Plan ):
     
     self.lower.set_pos(lmidPos)
     
-
-    cur_pos_u = self.upper.get_pos()
-    while (cur_pos_u+self.fwdStep> minPos):
+    while (cur_pos_u+self.fwdStep< maxPos):
       cur_pos_u= self.upper.get_pos()
-      new_pos_u = cur_pos_u - self.fwdStep
+      new_pos_u = cur_pos_u + self.fwdStep
       self.upper.set_pos(new_pos_u)
+    
+    self.upper.set_pos(maxPos)
 
-    self.upper.set_pos(minPos)
+
 
 
 
@@ -347,37 +350,6 @@ if __name__=="__main__":
 
     This program controls forward movement as well as steering for a robot developed with 2 motors
 
-    The keys used to control the robot are:
-      'up-arrow' -- move forwards - one press is one forwards cycle
-      '1', '2', '3', '4' or '5' -- sets arm speed as follows 250, 500, 750, 1000, 1250 ; default = 1000.
-      '6', '7', '8' or '9' -- sets steering angle as follows 10, 20, 30,40 : default 40.
-      'f' -- move front motor individually one cycle
-      'a' -- steer left - turns robot left
-      'd' -- steer right - turn robot right
-      'left-arrow' -- turns the robot left and moves forwards (maintains a left turn when held)
-      'right-arrow' -- turns the robot right and moves forwards (maintains a right turn when held) 
-      'r' -- reset the robot to ready position (straightened out)
-      'c' -- sets the robot to compact starting position (fits within 20cm x 20cm)
-      'q' -- saves the turn angle to turn left or turn right plans
-      'escape' -- exit program
-
-    Command Line Options:
-      --mod-count <number> | -c <number>
-        Search for specified number of modules at startup
-
-      --front <motor | -f <motor>
-      --middle <motor> | -m <motor>
-      --back <motor> | -b <motor>
-        Specify the motors used for moving and steering
-
-        Ex command:
-        $  python3 doubleGorilla.py -c 3 -f Nx0C -m Nx15 -b Nx97
-
-        NOTE: to use robot modules you MUST specify a -c option
-
-    Note* Code designed for motors in the following configuration:
-    * Front and back motors pivot in the direction of travel = positive dynamixel angle
-    * Middle motor pivot right = negative dynamixel angle
 
       """%argv[0])
       exit(1)
